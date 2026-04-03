@@ -1,0 +1,166 @@
+{
+  "name": "ai-master",
+  "displayName": "AI Master",
+  "description": "Stop typing. Start directing. A discipline layer that locks manual editing and trains you to work with AI agents.",
+  "version": "0.1.0",
+  "publisher": "ai-master",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ablipan/ai-master"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "keywords": ["ai", "agent", "readonly", "discipline", "agent-first", "ai-native"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "aiMaster.toggleLock",
+        "title": "AI Master: Toggle Lock",
+        "icon": "$(lock)"
+      },
+      {
+        "command": "aiMaster.unlock",
+        "title": "AI Master: Unlock Temporarily",
+        "icon": "$(unlock)"
+      },
+      {
+        "command": "aiMaster.showStats",
+        "title": "AI Master: Show Statistics"
+      },
+      {
+        "command": "aiMaster.resetDailyStats",
+        "title": "AI Master: Reset Daily Statistics"
+      },
+      {
+        "command": "aiMaster.noop",
+        "title": "AI Master: Operation Blocked"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "aiMaster.unlock",
+        "key": "ctrl+shift+u",
+        "mac": "cmd+shift+u",
+        "when": "aiMaster.locked"
+      },
+      {
+        "command": "aiMaster.noop",
+        "key": "ctrl+v",
+        "mac": "cmd+v",
+        "when": "aiMaster.locked && editorTextFocus && !aiMaster.whitelisted"
+      },
+      {
+        "command": "aiMaster.noop",
+        "key": "ctrl+x",
+        "mac": "cmd+x",
+        "when": "aiMaster.locked && editorTextFocus && !aiMaster.whitelisted"
+      },
+      {
+        "command": "aiMaster.noop",
+        "key": "backspace",
+        "when": "aiMaster.locked && editorTextFocus && !aiMaster.whitelisted"
+      },
+      {
+        "command": "aiMaster.noop",
+        "key": "delete",
+        "when": "aiMaster.locked && editorTextFocus && !aiMaster.whitelisted"
+      },
+      {
+        "command": "aiMaster.noop",
+        "key": "ctrl+shift+k",
+        "mac": "cmd+shift+k",
+        "when": "aiMaster.locked && editorTextFocus && !aiMaster.whitelisted"
+      },
+      {
+        "command": "aiMaster.noop",
+        "key": "enter",
+        "when": "aiMaster.locked && editorTextFocus && !aiMaster.whitelisted && !suggestWidgetVisible && !renameInputVisible && !inQuickOpen && !findInputFocussed"
+      },
+      {
+        "command": "aiMaster.noop",
+        "key": "tab",
+        "when": "aiMaster.locked && editorTextFocus && !aiMaster.whitelisted && !suggestWidgetVisible && !inSnippetMode"
+      }
+    ],
+    "configuration": {
+      "title": "AI Master",
+      "properties": {
+        "aiMaster.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable AI Master lock mode."
+        },
+        "aiMaster.unlockDurationSeconds": {
+          "type": "number",
+          "default": 60,
+          "minimum": 10,
+          "maximum": 600,
+          "description": "How many seconds each unlock lasts (default: 60)."
+        },
+        "aiMaster.dailyUnlockLimit": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "description": "Max unlocks per day (0 = unlimited)."
+        },
+        "aiMaster.whitelistGlobs": {
+          "type": "array",
+          "default": [
+            "**/.env*",
+            "**/*.json",
+            "**/*.yml",
+            "**/*.yaml",
+            "**/*.toml",
+            "**/*.md",
+            "**/*.txt",
+            "**/Makefile",
+            "**/Dockerfile",
+            "**/.gitignore"
+          ],
+          "items": { "type": "string" },
+          "description": "Glob patterns for files always editable (config files, docs, etc.)."
+        },
+        "aiMaster.showUnlockReason": {
+          "type": "boolean",
+          "default": false,
+          "description": "Prompt for a reason each time you unlock (tracked in stats)."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "aiMasterPanel",
+          "title": "AI Master",
+          "icon": "resources/sidebar-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "aiMasterPanel": [
+        {
+          "type": "webview",
+          "id": "aiMaster.statsView",
+          "name": "Statistics"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "node esbuild.mjs --production",
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.1",
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.25.2",
+    "typescript": "^5.8.3"
+  }
+}

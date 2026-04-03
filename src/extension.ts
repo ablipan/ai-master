@@ -18,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('aiMaster.noop', () => {
       vscode.window.setStatusBarMessage(
-        '$(lock) Editing locked — press Cmd+Shift+U to unlock',
+        '$(rocket) You\'re in AI mode — Cmd+Shift+U for manual mode',
         2000
       );
     }),

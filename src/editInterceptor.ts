@@ -89,7 +89,7 @@ export class EditInterceptor {
       }
 
       vscode.window.setStatusBarMessage(
-        '$(shield) Editing locked — Cmd+Shift+U to unlock',
+        '$(rocket) AI Mode active — Cmd+Shift+U for manual mode',
         2000
       );
     });
@@ -172,7 +172,7 @@ export class EditInterceptor {
       }
 
       vscode.window.setStatusBarMessage(
-        '$(shield) Input blocked — Cmd+Shift+U to unlock',
+        '$(rocket) AI Mode active — Cmd+Shift+U for manual mode',
         2000
       );
       return;

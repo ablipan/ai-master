@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import { LockManager } from './lockManager';
 
-const ICON_LOCKED = '$(shield)';
-const ICON_UNLOCKED = '$(pulse)';
+const ICON_AGENT = '$(rocket)';
+const ICON_MANUAL = '$(edit)';
 const ICON_URGENT = '$(flame)';
 
 export class StatusBarController {
@@ -23,23 +23,23 @@ export class StatusBarController {
 
   private update(): void {
     if (this.lockManager.locked) {
-      this.item.text = `${ICON_LOCKED} Agent Mode`;
+      this.item.text = `${ICON_AGENT} AI Mode`;
       this.item.backgroundColor = undefined;
       this.item.color = undefined;
       this.item.tooltip = new vscode.MarkdownString(
-        `${ICON_LOCKED} **AI Master — Agent Mode**\n\n` +
-        'Files are read-only. Let AI agents do the writing.\n\n' +
-        '`Cmd+Shift+U` to unlock temporarily.',
+        `${ICON_AGENT} **AI Master — Agent Mode**\n\n` +
+        'You are in AI-native flow. Agents write, you direct.\n\n' +
+        '`Cmd+Shift+U` to switch to manual mode temporarily.',
         true,
       );
     } else {
       const sec = Math.ceil(this.lockManager.unlockRemainingMs / 1000);
-      this.item.text = `${ICON_UNLOCKED} Manual ${sec}s`;
+      this.item.text = `${ICON_MANUAL} Manual ${sec}s`;
       this.item.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
       this.item.color = undefined;
       this.item.tooltip = new vscode.MarkdownString(
-        `${ICON_UNLOCKED} **AI Master — Manual Override**\n\n` +
-        `${sec}s remaining. Click to re-lock.`,
+        `${ICON_MANUAL} **AI Master — Manual Mode**\n\n` +
+        `${sec}s remaining. Click to return to AI mode.`,
         true,
       );
     }
@@ -54,7 +54,7 @@ export class StatusBarController {
       this.item.text = `${ICON_URGENT} Manual ${sec}s`;
       this.item.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
     } else {
-      this.item.text = `${ICON_UNLOCKED} Manual ${sec}s`;
+      this.item.text = `${ICON_MANUAL} Manual ${sec}s`;
       this.item.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
     }
   }

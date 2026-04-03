@@ -65,7 +65,7 @@ export class LockManager {
       const todayStats = this.stats.getToday();
       if (todayStats.unlockCount >= dailyLimit) {
         vscode.window.showWarningMessage(
-          `AI Master: Daily unlock limit reached (${dailyLimit}). Stay in agent-first mode.`
+          `AI Master: You've reached today's manual mode limit (${dailyLimit}). Stay in AI mode — you've got this.`
         );
         return false;
       }

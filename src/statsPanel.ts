@@ -90,27 +90,27 @@ export class StatsPanelProvider implements vscode.WebviewViewProvider {
 <div class="card">
   <h2>Today</h2>
   <div class="metric">
-    <span>Unlocks</span>
+    <span>Manual fallbacks</span>
     <span class="${today.unlockCount > 0 ? 'metric-warn' : 'metric-value'}">${today.unlockCount}</span>
   </div>
   <div class="metric">
-    <span>Unlock duration</span>
+    <span>Manual time</span>
     <span class="metric-value">${unlockMinutes} min</span>
   </div>
   <div class="metric">
-    <span>Manual edits</span>
-    <span class="metric-value">${today.manualEditFiles.length} files</span>
+    <span>Hand-edited files</span>
+    <span class="metric-value">${today.manualEditFiles.length}</span>
   </div>
   <div class="metric">
-    <span>Agent edits</span>
-    <span class="metric-value">${today.agentEditFiles.length} files</span>
+    <span>Agent-driven files</span>
+    <span class="metric-value">${today.agentEditFiles.length}</span>
   </div>
 </div>
 
 <div class="card">
-  <h2>7-Day Overview</h2>
+  <h2>7-Day Evolution</h2>
   <div class="metric">
-    <span>Manual edit ratio</span>
+    <span>Manual ratio</span>
     <span class="${manualPct > 30 ? 'metric-warn' : 'metric-value'}">${manualPct}%</span>
   </div>
   <div class="bar-chart">
@@ -118,7 +118,7 @@ export class StatsPanelProvider implements vscode.WebviewViewProvider {
       const maxUnlocks = Math.max(...chartData.map(x => x.unlocks), 1);
       const h = Math.max(2, (d.unlocks / maxUnlocks) * 50);
       return `<div class="bar-group">
-        <div class="bar bar-unlock" style="height:${h}px" title="${d.unlocks} unlocks"></div>
+        <div class="bar bar-unlock" style="height:${h}px" title="${d.unlocks} manual fallbacks"></div>
         <div class="bar-label">${d.date}</div>
       </div>`;
     }).join('')}
@@ -127,12 +127,12 @@ export class StatsPanelProvider implements vscode.WebviewViewProvider {
 
 <div class="card">
   <div class="streak">${streak}</div>
-  <div class="streak-label">consecutive zero-unlock days</div>
+  <div class="streak-label">days in pure AI mode</div>
 </div>
 
 ${topFileTypes.length > 0 ? `
 <div class="card">
-  <h2>Most Unlocked File Types</h2>
+  <h2>Most Manual File Types</h2>
   <div>${topFileTypes.map(([ext, count]) => `<span class="file-type">.${ext} (${count})</span>`).join('')}</div>
 </div>` : ''}
 
